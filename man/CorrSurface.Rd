@@ -24,11 +24,11 @@ a 3_D plot of correlation coefficient on lookback period and holding
   period.
 }
 \description{
-The function plot
+The function
 }
 \examples{
-lookback_seq <- seq(from = 1, to = 100, by = 1)
-holddays_seq <- seq(from = 1, to = 100, by = 1)
+lookback_seq <- seq(from = 1, to = 200, by = 10)
+holddays_seq <- seq(from = 1, to = 100, by = 10)
 getSymbols("^GSPC", from = 2010, to = Sys.Date())
 price <- GSPC[, 6]
 CorrSurface(price, lookback_seq = lookback_seq, holddays_seq = holddays_seq,

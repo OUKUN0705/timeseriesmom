@@ -4,7 +4,7 @@
 \alias{LookbackHoldCorr}
 \title{LookbackHoldCorr}
 \usage{
-LookbackHoldCorr(price, lookback, holddays, Sign = FALSE,
+LookbackHoldCorr(price, lookback, holddays, Sign = TRUE,
   return_method = c("arithmetic", "log"))
 }
 \arguments{
@@ -15,7 +15,7 @@ LookbackHoldCorr(price, lookback, holddays, Sign = FALSE,
 \item{holddays}{length of holding period.}
 
 \item{Sign}{whether the returns or signs of returns are used to calculate
-correlation, default is FALSE.}
+correlation, default is TRUE.}
 
 \item{return_method}{method of calculating returns.}
 }

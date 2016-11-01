@@ -1,6 +1,6 @@
 #' CorrSurface
 #'
-#' The function plot
+#' The function
 #'
 #' @param price an object of time serise representing a price series.
 #' @param lookback_seq a sequence of lookback length.
@@ -14,11 +14,11 @@
 #' @export
 #'
 #' @examples
-#' lookback_seq <- seq(from = 1, to = 100, by = 1)
-#' holddays_seq <- seq(from = 1, to = 100, by = 1)
+#' lookback_seq <- seq(from = 1, to = 200, by = 10)
+#' holddays_seq <- seq(from = 1, to = 100, by = 10)
 #' getSymbols("^GSPC", from = 2010, to = Sys.Date())
 #' price <- GSPC[, 6]
-#' CorrSurface(price, lookback_seq = lookback_seq, holddays_seq = holddays_seq,
+#' cs <- CorrSurface(price, lookback_seq = lookback_seq, holddays_seq = holddays_seq,
 #' Sign = TRUE, return_method = "log")
 CorrSurface <- function(price, lookback_seq, holddays_seq, Sign = FALSE,
                         return_method = c("arithmetic", "log")) {
@@ -46,19 +46,37 @@ CorrSurface <- function(price, lookback_seq, holddays_seq, Sign = FALSE,
     stop("return calculation method can only be 'arithmetic' or 'log'")
 
   #################################
-  result <- NULL
-  for (l in lookback_seq) {
-    for (h in holddays_seq) {
-      result <- rbind(result, LookbackHoldCorr(price, lookback = l, holddays = h,
-                                               Sign = Sign,
-                                               return_method = return_method))
-    }
-  }
+  # result <- NULL
+  # for (l in lookback_seq) {
+  #   for (h in holddays_seq) {
+  #     result <- rbind(result, LookbackHoldCorr(price, lookback = l, holddays = h,
+  #                                              Sign = Sign,
+  #                                              return_method = return_method))
+  #   }
+  # }
 
-  rho_matrix <- matrix(result[, 3], byrow = TRUE, ncol = length(holddays_seq))
 
-  plot_ly(z = rho_matrix, x = lookback_seq, y = holddays_seq) %>%
-    add_surface()
+  ###### use functional programming to speed up computation potentially
+  # purrr::pmap applies paralell mapping, thus transfer the loops sequency
+  lookback_seq2 <- sort(rep(lookback_seq, length(holddays_seq)))
+  holddays_seq2 <- rep(holddays_seq, length(lookback_seq))
+
+  result <- do.call(rbind,
+                    pmap(list(lookback_seq2, holddays_seq2),
+                         LookbackHoldCorr,
+                         price = price, return_method = return_method, Sign = Sign))
+
+
+  CorrSurface <- list(result = result,
+                 lookback_seq = lookback_seq,
+                 holddays_seq = holddays_seq,
+                 Sign = Sign,
+                 return_method = return_method)
+
+  class(CorrSurface) <- "CorrSurface"
+
+  return(CorrSurface)
+
 }
 
 

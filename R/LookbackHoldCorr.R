@@ -11,7 +11,7 @@
 #' @param lookback length of lookback period.
 #' @param holddays length of holding period.
 #' @param Sign whether the returns or signs of returns are used to calculate
-#'   correlation, default is FALSE.
+#'   correlation, default is TRUE.
 #' @param return_method method of calculating returns.
 #'
 #' @return a 1 by 4 matrix with lookback period, holding period, return
@@ -25,7 +25,7 @@
 #' LookbackHoldCorr(price, 200, 20, FALSE, "log")
 #' LookbackHoldCorr(price, 200, 20, TRUE, "arithmetic")
 #' LookbackHoldCorr(price, 200, 20, FALSE, "arithmetic")
-LookbackHoldCorr <- function(price, lookback, holddays, Sign = FALSE,
+LookbackHoldCorr <- function(price, lookback, holddays, Sign = TRUE,
                                return_method = c("arithmetic", "log")) {
   ##################### check input arguments ##################
   price <- as.xts(price)

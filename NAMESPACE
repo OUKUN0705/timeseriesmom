@@ -3,3 +3,4 @@
 S3method(plot,CorrSurface)
 export(CorrSurface)
 export(LookbackHoldCorr)
+export(ScreenPara)

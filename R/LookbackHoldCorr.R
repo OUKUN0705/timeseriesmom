@@ -30,7 +30,7 @@ LookbackHoldCorr <- function(price, lookback, holddays, Sign = TRUE,
   ##################### check input arguments ##################
   price <- as.xts(price)
 
-  if (sum(class(price) %in% c("zoo", "xts")) == 0)
+  if (all(class(price) %in% c("zoo", "xts")) != TRUE)
     stop("Please provide with time series object")
 
   if (missing(lookback))
@@ -87,7 +87,8 @@ LookbackHoldCorr <- function(price, lookback, holddays, Sign = TRUE,
   }
   names(ret_pair) <- c("lag return", "lead return")
 
-  #
+  # turn the returns into +1 or -1 according to the signs and correlation will
+  # be calculated based on signs
   if (Sign) {
     ret_pair <- sign(ret_pair)
   }

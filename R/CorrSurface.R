@@ -57,21 +57,26 @@ CorrSurface <- function(price, lookback_seq, holddays_seq, Sign = FALSE,
 
 
   ###### use functional programming to speed up computation potentially
-  # purrr::pmap applies paralell mapping, thus transfer the loops sequency
+
+  # purrr::pmap applies paralell mapping, thus transform the loops sequency
   lookback_seq2 <- sort(rep(lookback_seq, length(holddays_seq)))
   holddays_seq2 <- rep(holddays_seq, length(lookback_seq))
 
   result <- do.call(rbind,
                     pmap(list(lookback_seq2, holddays_seq2),
                          LookbackHoldCorr,
-                         price = price, return_method = return_method, Sign = Sign))
+                         price = price,
+                         return_method = return_method,
+                         Sign = Sign
+                         )
+                    )
 
 
   CorrSurface <- list(result = result,
-                 lookback_seq = lookback_seq,
-                 holddays_seq = holddays_seq,
-                 Sign = Sign,
-                 return_method = return_method)
+                      lookback_seq = lookback_seq,
+                      holddays_seq = holddays_seq,
+                      Sign = Sign,
+                      return_method = return_method)
 
   class(CorrSurface) <- "CorrSurface"
 

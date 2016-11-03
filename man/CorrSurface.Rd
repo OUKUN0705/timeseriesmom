@@ -31,7 +31,7 @@ lookback_seq <- seq(from = 1, to = 200, by = 10)
 holddays_seq <- seq(from = 1, to = 100, by = 10)
 getSymbols("^GSPC", from = 2010, to = Sys.Date())
 price <- GSPC[, 6]
-CorrSurface(price, lookback_seq = lookback_seq, holddays_seq = holddays_seq,
+cs <- CorrSurface(price, lookback_seq = lookback_seq, holddays_seq = holddays_seq,
 Sign = TRUE, return_method = "log")
 }
 
